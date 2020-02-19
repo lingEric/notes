@@ -1,0 +1,2 @@
+ssh-keygen -t rsa -b 4096 -C "donglin.ling@hand-china.com"
+ssh-keygen -t rsa -b 4096 -C "lingdl.jx@founder.com.cn"

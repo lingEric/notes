@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    $$Author: lingdonglin22304
+    $$Date: ${date} ${time}  
+    $$Revision: 1.0  
+    $$Purpose: ${cursor}
+		
+-->
+<a:screen xmlns:a="http://www.aurora-framework.org/application" trace="true">
+    <a:init-procedure>
+        <a:model-query autoCount="false" fetchAll="true" model="" rootPath="record"/>
+    </a:init-procedure>
+    <a:view>
+        <a:link id="acp_management_header_svc_link" url="${/request/@context_path}/modules/acp/ACP8872/acp_management_headers.svc"/>
+        <script><![CDATA[
+            //点击，创建全屏页面
+			function (){
+			    new Aurora.Window({
+			        url: $('').getUrl() + '?action=new',
+			        title: '',
+			        id: '',
+			        fullScreen: true
+			    });
+			}
+
+			//渲染函数
+			function (text, record, node){
+			    //不要比较描述，比较数据库中存放的数据
+			}
+			
+			//批量保存
+			function (){
+			    var ds = $('');
+			    if(ds.validate()){
+				    var records = ds.getSelected();
+				    if(records.length == 0){
+				        Aurora.showMessage('提示','请至少选中一行');
+				        return;
+				    }
+				    var para = [];
+				    for (var i=0;i<records.length;i++){
+				        if(records[i].isNew){
+				        	records[i].set('_status','insert');
+				        }else{
+				        	records[i].set('_status','update');
+				        }
+				        para.push(records[i].data);
+				    }
+
+					Aurora.Masker.mask($('management_detail_22304_window').wrap, '${l:PROMPT.SUBMITING}');
+				    Aurora.request({
+				        url:$('acp_management_header_svc_link').getUrl(),
+				        para:para,
+				        success:function(result){
+							Aurora.Masker.unmask($('management_detail_22304_window').wrap);
+							console.log(result);
+				            Aurora.showMessage('${l:PROMPT}','${l:PROMPT.OPERATION_SUCCESS}',function(){
+				             ds.query();
+				         });
+				        },
+				        failure:function(result){
+							Aurora.Masker.unmask($('management_detail_22304_window').wrap);
+							console.log(result);
+							return;
+				        },
+						error: function(result) {
+                            Aurora.Masker.unmask($('management_detail_22304_window').wrap);
+							console.log(result);
+							return;
+                        },
+				        scope:this
+				    }); 
+			    }else{
+			        Aurora.showErrorMessage('${l:PROMPT}','数据校验失败，请确保您已经输入正确的数据！');
+				}
+			}
+			
+			//批量删除
+			function acp_management22304_batch_delete(){
+				var ds = $('');
+				var records = ds.getSelected();
+				if(records.length == 0){
+					Aurora.showMessage('提示','请至少选中一行');
+					return;
+				}
+				var para = [];
+				for (var i=0;i<records.length;i++){
+					records[i].set('_status','delete');
+					para.push(records[i].data);
+				}
+				Aurora.Masker.mask($('management_detail_22304_window').wrap, '${l:PROMPT.SUBMITING}');
+				Aurora.showConfirm('确认','确认删除选中的记录？',function(){
+					Aurora.request({
+						url:$('acp_management_header_svc_link').getUrl(),
+						para:para,
+						success:function(result){
+							Aurora.Masker.unmask($('management_detail_22304_window').wrap);
+							console.log(result);
+				            Aurora.showMessage('${l:PROMPT}','${l:PROMPT.OPERATION_SUCCESS}',function(){
+				             ds.query();
+				         });
+				        },
+				        failure:function(result){
+							Aurora.Masker.unmask($('management_detail_22304_window').wrap);
+							console.log(result);
+							return;
+				        },
+						error: function(result) {
+                            Aurora.Masker.unmask($('management_detail_22304_window').wrap);
+							console.log(result);
+							return;
+                        },
+				        scope:this
+						}); 
+				});
+			}  
+			// 跳转 renderer
+			function (value, record, name) {
+				if (value=='undefined'||value==''||value==undefined){
+				    return '';
+				} 
+				var header_id = record.get('header_id');
+				return '<a href="javascript:line_screen('+header_id+')">'+value+'</a>';
+			}
+			//点击发票号码触发弹窗
+			function line_screen(header_id) {
+				new Aurora.Window({
+					url: $('').getUrl() + '?header_id=' + header_id ,
+					title: '',
+					id: '',
+					fullScreen: true
+				});
+			}
+		]]></script>
+        <a:dataSets>
+            <!--  -->
+            <a:dataSet id="" autoQuery="true" fetchAll="true" lookupCode=""/>
+			<a:dataSet id="" autoQuery="true" fetchAll="true" model="acp.ACP8872.acp_invoice_province"/>
+            <!-- 查询数据集 -->
+            <a:dataSet id="" model="">
+                <a:fields>
+                    <a:field name="" displayField="" options="" returnField="" valueField=""/>
+                </a:fields>
+            </a:dataSet>
+            <!-- 结果数据集 -->
+            <a:dataSet id="" autoCount="true" autoPageSize="true" autoQuery="true" model="" queryDataSet="" selectable="true">
+                <a:fields>
+                    <a:field name="" readOnly="true"/>
+                    <!-- comboBox字段映射 -->
+                    <a:field name="_code" required="true"/>
+                    <a:field name="_display" options="" displayField=""  returnField="" valueField=""/>
+
+                    <!-- Lov字段映射 -->
+                    <a:field name="_code" required="true"/>
+                    <a:field name="_display" autoComplete="true" autoCompleteField="_code" lovHeight="530" lovWidth="540" lovService="" title="">
+                        <a:mapping>
+                            <a:map from="_id" to="_id"/>
+                            <a:map from="_code" to="_code"/>
+                            <a:map from="_name" to="_display"/>
+                        </a:mapping>
+                    </a:field>
+                </a:fields>
+            </a:dataSet>
+        </a:dataSets>
+        <a:screenBody>
+            <!-- 按钮-->
+            <a:screenTopToolbar>
+                <a:gridButton bind="" type="add" width="100"/>
+                <a:toolbarButton click="" text="PROMPT.SAVE" width="100"/>
+            </a:screenTopToolbar>
+            <!--查询 -->
+            <a:queryForm id="" bindTarget="" resultTarget="" style="width:100%;border:none">
+                <a:formToolBar labelWidth="100">
+                    <a:hBox labelWidth="100">
+                        <a:textField name="" prompt=""/>
+                        <a:comboBox name="" prompt=""/>
+                    </a:hBox>
+                </a:formToolBar>
+            </a:queryForm>
+            <!--数据 -->
+            <a:grid id="" autoAdjust="true" bindTarget="" marginHeight="180" marginWidth="100" navBar="true">
+                <a:columns>
+                    <a:column name="" align="center" prompt="" renderer="" editor="" width="80"/>
+                </a:columns>
+                <a:editors>
+                    <a:textField id=""/>
+                </a:editors>
+            </a:grid>
+        </a:screenBody>
+    </a:view>
+</a:screen>

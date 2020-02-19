@@ -1,0 +1,127 @@
+==》鼠标监听滚动距离
+
+1.原生js通过window.onscroll监听
+window.onscroll = function() {
+  //为了保证兼容性，这里取两个值，哪个有值取哪一个
+  //scrollTop就是触发滚轮事件时滚轮的高度
+  var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  console.log("滚动距离" + scrollTop);
+}
+
+2.Jquery通过$(window).scroll()监听
+$(window).scroll(function() {
+  //为了保证兼容性，这里取两个值，哪个有值取哪一个
+  //scrollTop就是触发滚轮事件时滚轮的高度
+  var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  console.log("滚动距离" + scrollTop);
+})
+
+3.var scrollTop3 = $(document).scrollTop();
+
+出现问题：测试页面如下:
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <style type="text/css">
+        body{
+            height: 2000px;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        window.onscroll=function () {
+            var top=document.body.scrollTop;
+            console.log(top);
+        }
+    </script>
+</body>
+</html>
+
+Chrome 浏览器下,无论你怎么滚动页面,控制台里输出的就是 0 ;
+有人说这是个兼容性问题,也对.
+测试代码不变, Chrome , IE 都是 0 ,而 Edge 就能正确的输出.
+按浏览器兼容来解决,方法很简单:
+document.body.scrollTop 无效的时候,
+换用 document.documentElement.scrollTop 就可以了.
+var top=document.body.scrollTop || document.documentElement.scrollTop;//兼容写法
+
+
+这个问题到这里并没有结束,
+有人可能遇到这样的情况:
+
+同样的js代码,同样的 Chrome 浏览器,为什么别人能用 document.body.scrollTop ,偏偏我就用不了???
+
+这是个有趣的问题,我研究了一下.
+发现区别在于 HTML 代码的DTD声明上:
+<!DOCTYPE html>
+
+如果不做DTD声明, Chrome就可以支持   document.body.scrollTop 了.
+很怪吧?
+
+但这里要强调一下:
+
+虽然,HTML 5 不基于 SGML，因此不需要对 DTD 进行引用,
+但是,依然需要 doctype 来规范浏览器的行为!
+
+一个具有正确文档类型（doctype）的 HTML5 文档：
+<!DOCTYPE HTML> 
+<html>
+
+    <head>
+        <title>Title of the document</title>
+    </head>
+
+    <body>
+        The content of the document......
+    </body>
+
+</html>
+
+作者：留白的未来
+链接：https://www.jianshu.com/p/b0a39995b11f
+來源：简书
+简书著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。
+====================================================================================
+
+==》滚动页面到指定位置
+主要使用的是锚点技术，锚点元素通过scrollTop值改变进行定位。
+锚点
+锚点是网页制作中超级链接的一种，又叫命名锚记。命名锚记像一个迅速定位器一样，是一种页面内的超级链接。
+
+1.直接使用scrollTop
+使用scrollTop方法，x为滚轮的高度
+$("body,html").scrollTop(x);
+加动画的滚动
+// 滚动到指定位置
+$('html, body').animate({  
+  scrollTop: $("#div1").offset().top  
+}, 2000);  
+
+// 滚动到顶部，指定距顶部的距离
+$('.scroll_top').click(function(){
+  $('html,body').animate({
+    scrollTop: '0px'
+  }, 800);
+ });
+
+
+2.利用hash
+hash
+hash 属性是一个可读可写的字符串，该字符串是 URL 的锚部分（从 # 号开始的部分）。
+location.hash=anchorname。
+例如：以下地址的hash为#hot
+http://this.summer.io/is/#hot    // location.hash → #hot
+
+以下函数将页面定位到title元素
+function aa(){
+ window.location.hash = "#title";  
+}
+
+3.直接使用超链接锚点
+点击a标签页面将会定位到anchor1元素
+<a href="#anchor1">锚点1</a>
+
+====================================================================================

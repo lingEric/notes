@@ -1,0 +1,36 @@
+参考以下程序
+package test;
+
+import java.io.*;
+
+public class Test {
+    public static void main(String[] args) {
+
+        InputStream inputStream1=null;
+        InputStream inputStream2 = Test.class.getResourceAsStream("/resource/grammar.txt");
+		/* 文件的位置参考
+		 * src/						【此为classpath根目录】
+		 * src/test/Test.java		【字节码文件所在位置】		
+		 * src/resource/grammar.txt	【读取的文件所在位置】
+		*/
+        try {
+            inputStream1 = new FileInputStream(new File(new Test().getClass().getClassLoader().getResource(".").getPath()+"/resource/grammar.txt"));
+            System.out.println(inputStream1.read());
+            System.out.println(inputStream2.read());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+结论
+以上两种方法均是通过字节码文件获取实际路径，然后再拼接文件的绝对路径，即使项目移动到其它路径，也会自动修改文件的路径参数。
+
+注意事项：
+1.使用方法getResourceAsStream()时：
+1）若参数从/开始，则是从classpath根目录下开始
+2）若参数不从/开始，则从对应字节码文件当前目录开始
+2.使用方法getClassLoader().getResource(".").getPath()时：
+输出的路径是从classpath根目录下开始
+
+

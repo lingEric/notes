@@ -1,0 +1,50 @@
+//登录阿里云授权
+C:\Users\ling>docker login --username=15797656200 registry.cn-hangzhou.aliyuncs.com
+Password:
+Login Succeeded
+
+//拉取镜像
+C:\Users\ling>docker pull centos
+Using default tag: latest
+latest: Pulling from library/centos
+d8d02d457314: Pull complete
+Digest: sha256:307835c385f656ec2e2fec602cf093224173c51119bbebd602c53c3653a3d6eb
+Status: Downloaded newer image for centos:latest
+docker.io/library/centos:latest
+
+//查看镜像
+C:\Users\ling>docker images -a
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+centos              latest              67fa590cfc1c        2 weeks ago         202MB
+
+//运行镜像
+-d					后台运行，并返回容器id【daemon】
+-i					以交互模式运行容器，通常与-t同时使用
+-t					为容器重新分配一个伪输入终端，通常与-i同时使用
+-u					指定容器的用户
+-p					端口映射，宿主机端口:容器端口
+-v					目录映射，宿主机目录:容器目录
+--name="nginx-lb":	为容器指定一个名称；
+--dns 8.8.8.8:		指定容器使用的DNS服务器，默认和宿主一致；
+--dns-search example.com: 指定容器DNS搜索域名，默认和宿主一致；
+-h "mars":			指定容器的hostname；
+-e username="ritchie": 设置环境变量；
+--env-file=[]:			从指定文件读入环境变量；
+--cpuset="0-2" or --cpuset="0,1,2": 绑定容器到指定CPU运行；
+-m :					设置容器使用内存最大值；
+--net="bridge":			指定容器的网络连接类型，支持 bridge/host/none/Container: 四种类型；
+--link=[]:				添加链接到另一个容器；
+--expose=[]:			开放一个端口或一组端口；
+C:\Users\ling>docker run -d -i -t centos
+d0e918d9bebe6310afb836ca8da5e4dbf3b00bd7f9cbf8343a94908a6a41cb99
+
+C:\Users\ling>docker attach centos
+Error: No such container: centos
+
+C:\Users\ling>docker ps -a
+CONTAINER ID        IMAGE         COMMAND             CREATED             STATUS		PORTS			NAMES
+d0e918d9bebe        centos       "/bin/bash"         34 seconds ago    Up 32 seconds              vigorous_curran   
+82bca1796add        centos       "/bin/bash"         12 minutes ago    Exited (0) 12 minutes ago  nostalgic_vaughan           
+
+C:\Users\ling>docker attach d0e918
+[root@d0e918d9bebe /]#

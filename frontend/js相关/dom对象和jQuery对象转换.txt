@@ -1,0 +1,15 @@
+JS的dom对象和jQuery对象转换
+0.规范
+js节点
+var ele
+
+jQuery节点
+var $ele
+
+1.dom-->jquery
+var $ele_jquery=$(ele_js);
+
+2.jquery-->dom
+var ele_js=$ele_jquery[0];
+或
+var ele_js=$ele_jquery.get(0);

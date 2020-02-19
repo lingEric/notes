@@ -1,0 +1,88 @@
+0.Controller中使用PageHelper
+@RequestMapping(value = "/userComments/{pn}",method = RequestMethod.GET)
+@ResponseBody
+public Msg getUserComment(@PathVariable Integer pn,HttpSession session) {
+	User user = (User) session.getAttribute("user");
+	//分页插件，参数：1.当前页，2.每页显示记录数
+	PageHelper.startPage(pn, 25);
+	List<UserComment> userComments = userCommentService.getUserComment(user.getId());
+	//参数：1.循环显示的对象，2.连续显示的页面页码
+	PageInfo page = new PageInfo(userComments);
+	return Msg.success().add("pageInfo", page);
+}
+
+<script>
+
+    //创建分页条
+    function pageNav(result) {
+        var $blogCommentPageNavArea = $("#blogCommentPageNavArea");
+        $blogCommentPageNavArea.empty();
+		
+        var div = $("<div class='p-2'>");
+        var ul = $("<ul></ul>").addClass("pagination");
+        //遍历给ul中添加页码提示
+        $.each(result.extend.pageInfo.navigatepageNums,function(index,item){
+
+            var numLi = $("<li class='page-item'></li>").append($("<a class='btn btn-sm btn-outline-primary mr-2'></a>").append(item));
+            if(result.extend.pageInfo.pageNum === item){
+                //当前页按钮，不可点击
+                numLi.find("a").removeClass("btn-outline-primary");
+                numLi.find("a").addClass("disabled");
+                numLi.find("a").addClass("btn-primary");
+            }
+            numLi.click(function(){
+                toPage(item);
+            });
+            ul.append(numLi);
+        });
+        div.append(ul).appendTo($blogCommentPageNavArea);
+    }
+	
+	
+
+    //根据返回的json数据，构建分页数据
+    function buildPage(result) {
+        var $notificationList = $("#notificationList");
+        $notificationList.empty();
+        $.each(result.extend.pageInfo.list, function (index, item) {
+            var $div = $("<div data-id='" + item.id + "' onclick='viewNotification(this)' class='border-bottom border-gray'>");
+            var $h4 = $("<h4 class='d-block text-gray-dark'>" + item.title + "</h4>");
+            //截取内容长度，只显示一部分
+            var $p = $("<p>"+item.content.substring(0,64)+". . .</p>");
+            //添加公告的时间
+            var $label=$("<label class='font-weight-light text-sm-left'>"+new Date(item.edittime).toLocaleString()+"</label>");
+            $div.append($h4).append($p).append($label).appendTo($notificationList);
+        });
+    }
+	
+
+    //获取指定页面的公告数据
+    function toPage(pn) {
+        $.ajax({
+            url: "",
+            method: 'GET',
+            success: function (result) {
+                if (result.code === 100) {
+                    //返回数据成功，开始构建页面
+                    //判断该页数据是否为空
+                    if (result.extend.pageInfo.list.length > 0) {
+                        buildPage(result);
+						//分页条
+						pageNav(result);
+                    }else{
+						//提示用户数据为空
+					}
+                } else {
+                    //获取信息失败,弹出提示
+                    toastr.error("获取数据失败，请稍后重试！！");
+                }
+            }
+        })
+    }
+	
+
+    //默认显示第一页数据
+    $(function () {
+        toPage(1);
+    })
+</script>

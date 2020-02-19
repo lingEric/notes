@@ -1,0 +1,11 @@
+@RequestMapping(value = "/userComment",method = RequestMethod.GET)
+@ResponseBody
+public Msg goToUserComment(@RequestParam(name="pn",value="pn",defaultValue = "1")Integer pn, HttpServletRequest request){
+	User user = (User) request.getSession().getAttribute("user");
+	//分页插件，参数：1.当前页，2.每页显示记录数
+	PageHelper.startPage(pn, 10);
+	List<UserComment> userComments = userCommentService.getUserComment(user.getId());
+	//参数：1.循环显示的对象，2.连续显示的页面页码
+	PageInfo page = new PageInfo(userComments, 5);
+	return Msg.success().add("pageInfo", page);
+}

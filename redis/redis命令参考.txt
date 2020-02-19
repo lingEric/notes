@@ -1,0 +1,21 @@
+开启
+redis-server redis.conf
+
+开启密码
+config set requirepass "password"
+
+本地登录
+redis-cli 
+
+远程登录
+redis-cli -h host -p port(6379) -a "password"
+
+开启远程访问
+注释掉
+bind 127.0.0.1
+修改
+protected-mode 修改为no
+
+关闭
+redis-cli -p 端口号 shutdown
+

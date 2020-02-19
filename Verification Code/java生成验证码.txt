@@ -1,0 +1,19 @@
+1.AuthCodeUtil.java
+生成带有验证码的图片
+
+2.ImgServlet.java
+接收获取验证码图片请求
+
+3.前端页面，发起获取图片请求
+<img src="/authimage" /><a href="#" class="authimage" ">New Code</a>
+           	  		
+
+/*JavaScript (JQuery)*/
+  var i =1;
+$('.authimage').click(function(){
+	var img = $(this).prev();
+	img.attr("src","/authimage?imgno="+i);
+	i++;
+	return false;
+});
+           	  		

@@ -1,0 +1,1 @@
+redis-cli -h 120.79.71.44 -p 6379 -a "zhiyuntech";

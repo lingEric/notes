@@ -1,0 +1,51 @@
+==》1.安装并设置git本地客户端
+$ git config --global user.name "22304"
+$ git config --global user.email "donglin.ling@hand-china.com"
+
+git config --list  查看所有参数
+
+注意global参数，设置本地所有的git仓库都使用该信息
+
+==》2.初始化一个Git仓库
+
+初始化一个Git仓库：
+git init					//命令行中进入一个目录之后，输入该命令设置该目录为仓库
+git init project_name 		//在当前目录创建project_name文件夹并初始化为仓库
+
+添加文件到Git仓库：
+1：git add 	filename				//添加文件，可添加多次
+2：git commit -m '提交信息'			//commit 提交，m，说明注释
+
+
+==》3.版本回退
+1.HEAD指向的是当前版本
+2.版本切换命令：
+git reset --hard <commit_id>		//commit_id 可不用写全
+3.回退前，使用命令git log查看提交历史，以确定要回退的版本
+4.用git reflog查看版本切换历史，以确定要返回的版本
+
+
+
+==》4.分支操作
+查看分支：git branch
+创建分支：git branch <name>
+切换分支：git checkout <name>
+创建+切换分支：git checkout -b <name>
+合并某分支到当前分支：git merge <name>
+删除分支：git branch -d <name>
+
+
+
+==》5.远程仓库
+1.创建ssh key
+$ ssh-keygen -t rsa -C "youremail@example.com"
+2.登陆GitHub，打开“Account settings”，“SSH Keys”页面，创建
+3.关联操作和提交
+1)关联一个远程库
+git remote add origin git@server-name:path/repo-name.git
+
+2)第一次推送master分支的所有内容
+git push -u origin master
+
+3)之后的提交
+git push origin master

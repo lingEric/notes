@@ -1,0 +1,89 @@
+--》安装jdk
+0.下载安装包【参考${software/ide/linux}目录下的软件包】
+1.创建软件根目录
+mkdir /usr/software
+2.解压
+tar -zxvf ${jdk} -C /usr/software/jdk
+3.添加Java到环境变量中
+export JAVA_HOME=/usr/software/jdk1.8.0_191
+export CLASSPATH=.:${JAVA_HOME}/lib
+export  PATH=${JAVA_HOME}/bin:$PATH
+4.profile文件生效
+source /etc/profile
+================================================================================
+--》安装tomcat
+0.下载安装包【参考${software/ide/linux}目录下的软件包】
+1.解压
+tar -zxvf ${tomcat} -C /usr/software/tomcat
+2.删除默认应用
+rm -rf /usr/software/tomcat/webapps/*
+================================================================================
+--》安装MySQL
+1.下载
+wget http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.33-linux-glibc2.5-x86_64.tar.gz
+
+2.解压
+tar -zxvf mysql-5.6.33-linux-glibc2.5-x86_64.tar.gz
+
+3.复制
+cp -r mysql-5.6.33-linux-glibc2.5-x86_64 /usr/software/mysql
+
+4.添加用户组和用户
+#添加用户组
+groupadd mysql
+#添加用户mysql 到用户组mysql
+useradd -g mysql mysql
+
+5.安装
+cd /usr/software/mysql
+mkdir data/mysql
+chown -R mysql:mysql /usr/software/mysql/*
+
+6.安装依赖包
+yum -y install autoconf 
+
+7.继续安装
+#./scripts/mysql_install_db --user=mysql --datadir=/usr/software/mysql/data/mysql
+#cp support-files/mysql.server /etc/init.d/mysqld
+#chmod 755 /etc/init.d/mysqld
+#cp support-files/my-default.cnf /etc/my.cnf
+ 
+#修改启动脚本
+vi /etc/init.d/mysqld
+ 
+#修改项：
+basedir=/usr/software/mysql
+datadir=/usr/software/mysql/data/mysql
+ 
+#启动服务
+service mysqld start
+ 
+#测试连接
+#./bin/mysql -u root
+【注意】登陆之后，把空密码账号删除
+ 删除所有账号之后，重新设置用户信息
+ GRANT ALL PRIVILEGES ON *.* TO ‘root’@'%’ IDENTIFIED BY 'password' WITH GRANT OPTION;
+ 
+8.加入环境变量
+#vi /etc/profile
+--》加入以下代码
+export PATH=$PATH:/usr/software/mysql/bin
+--》刷新path
+#source /etc/profile
+ 
+9.其它命令
+#启动mysql
+service mysqld start
+#关闭mysql
+service mysqld stop
+#查看运行状态
+service mysqld status
+
+================================================================================
+Linux安装redis
+$ wget http://download.redis.io/releases/redis-5.0.2.tar.gz
+$ tar xzf redis-5.0.2.tar.gz
+$ cd redis-5.0.2
+$ make
+
+================================================================================

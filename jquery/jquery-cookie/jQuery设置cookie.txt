@@ -1,0 +1,15 @@
+//引入jquery-cookie.js文件
+//新建一个cookie，名称为cookie1，值为"hello",有效期到浏览器关闭  
+$.cookie("cookie1","hello");
+
+//新建一个cookie，名称cookie2,值"word",有效期到2天后  
+$.cookie("cookie2","word",{expires:2});
+
+//将cookie1的值"hello"赋给变量 str  
+var str = $.cookie("cookie1");
+
+//删除cookie2  
+$.cookie("cookie2",null);
+
+//将cookie1的值修改为"bye"  
+$.cookie("cookie1","bye");

@@ -1,0 +1,48 @@
+1.Linux查看创建的用户
+cat /etc/passwd|grep -v nologin|grep -v halt|grep -v shutdown|awk -F":" '{ print $1"|"$3"|"$4 }'|more
+
+================================================
+其它常用操作
+1、Linux里查看所有用户
+(1)在终端里.其实只需要查看 /etc/passwd文件就行了.
+(2)看第三个参数:500以上的,就是后面建的用户了.其它则为系统的用户.
+或者用cat /etc/passwd |cut -f 1 -d :
+
+2、用户管理命令
+useradd 
+注：添加用户
+adduser 
+注：添加用户
+passwd 
+注：为用户设置密码
+usermod 
+注：修改用户命令，可以通过usermod 来修改登录名、用户的家目录等等;
+pwcov 
+注：同步用户从/etc/passwd 到/etc/shadow
+pwck 
+注：pwck是校验用户配置文件/etc/passwd 和/etc/shadow 文件内容是否合法或完整;
+pwunconv 
+注：是pwcov 的立逆向操作，是从/etc/shadow和 /etc/passwd 创建/etc/passwd ，然后会删除 /etc/shadow 文件;
+finger 
+注：查看用户信息工具
+id 
+注：查看用户的UID、GID及所归属的用户组
+chfn 
+注：更改用户信息工具
+su 
+注：用户切换工具
+
+3、管理用户组(group)的工具或命令;
+groupadd 
+注：添加用户组;
+groupdel 
+注：删除用户组;
+groupmod 
+注：修改用户组信息
+groups 
+注：显示用户所属的用户组
+grpck
+grpconv 
+注：通过/etc/group和/etc/gshadow 的文件内容来同步或创建/etc/gshadow ，如果/etc/gshadow 不存在则创建;
+grpunconv 
+注：通过/etc/group 和/etc/gshadow 文件内容来同步或创建/etc/group ，然后删除gshadow文件

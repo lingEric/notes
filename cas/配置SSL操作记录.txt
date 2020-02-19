@@ -1,0 +1,78 @@
+cd C:\Users\23570\keystore
+
+C:\Users\23570\keystore>keytool -genkey -keyalg RSA -alias thekeystore -keystore thekeystore
+输入密钥库口令:changeit
+再次输入新口令:changeit
+您的名字与姓氏是什么?
+  [Unknown]:  localhost
+您的组织单位名称是什么?
+  [Unknown]:  localhost
+您的组织名称是什么?
+  [Unknown]:
+您所在的城市或区域名称是什么?
+  [Unknown]:
+您所在的省/市/自治区名称是什么?
+  [Unknown]:
+该单位的双字母国家/地区代码是什么?
+  [Unknown]:
+CN=localhost, OU=localhost, O=Unknown, L=Unknown, ST=Unknown, C=Unknown是否正确?
+  [否]:  y
+
+输入 <thekeystore> 的密钥口令
+        (如果和密钥库口令相同, 按回车):
+
+Warning:
+JKS 密钥库使用专用格式。建议使用 "keytool -importkeystore -srckeystore thekeystore -destkeystore thekeystore -deststoretype pkcs12" 迁移到行业标准格式 PKCS12。
+
+C:\Users\23570\keystore>keytool -export -alias thekeystore -file thekeystore.crt -keystore thekeystore
+输入密钥库口令:
+存储在文件 <thekeystore.crt> 中的证书
+
+Warning:
+JKS 密钥库使用专用格式。建议使用 "keytool -importkeystore -srckeystore thekeystore -destkeystore thekeystore -deststoretype pkcs12" 迁移到行业标准格式 PKCS12。
+
+切换为管理员身份运行以下命令：
+
+C:\Users\23570\keystore>keytool -import -alias thekeystore -storepass changeit -file thekeystore.crt -keystore "C:\Program Files\Java\jdk1.8.0_191\jre\lib\security\cacerts"
+所有者: CN=localhost, OU=localhost, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+发布者: CN=localhost, OU=localhost, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+序列号: 657eb9ce
+有效期为 Fri Mar 29 11:50:08 CST 2019 至 Thu Jun 27 11:50:08 CST 2019
+证书指纹:
+         MD5:  8D:3C:78:E9:8A:44:77:3F:C2:8B:20:95:C7:6C:91:8F
+         SHA1: 69:F3:46:C4:03:95:E1:D0:E6:9D:8B:72:F4:EB:ED:13:8B:9A:6A:38
+         SHA256: 79:D1:F8:B2:1B:E3:AF:D4:4F:35:CB:6B:C8:84:3F:85:21:13:0F:96:4A:B5:E5:4C:47:11:44:21:8F:F3:2D:83
+签名算法名称: SHA256withRSA
+主体公共密钥算法: 2048 位 RSA 密钥
+版本: 3
+
+扩展:
+
+#1: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: B0 38 1D 00 56 65 EE 98   7C 35 58 04 B5 2E C0 A0  .8..Ve...5X.....
+0010: D5 C2 C5 B5                                        ....
+]
+]
+
+是否信任此证书? [否]:  y
+证书已添加到密钥库中
+
+复制该证书文件theKeystore到${cas-server}/etc/cas/theKeystore中
+
+配置tomcat/conf/server.xml中的ssl连接
+
+<Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"
+           maxThreads="200" SSLEnabled="true" scheme="https"
+           secure="true" clientAuth="false" sslProtocol="TLS"
+           keystoreFile="C:\Users\23570\keystore\thekeystore"
+           keystorePass="changeit"/>
+		   
+
+其他命令
+keytool -delete -alias cas.server.com -keystore "C:\Program Files\Java\jdk1.8.0_191\jre\lib\security\cacerts"
+
+keytool -list -v -keystore "C:\Program Files\Java\jdk1.8.0_191\jre\lib\security\cacerts" -alias cas.server.com		   
+
+

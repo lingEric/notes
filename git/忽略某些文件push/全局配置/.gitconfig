@@ -1,0 +1,13 @@
+[user]
+	name = 凌东林
+	email = donglin.ling@hand-china.com
+[core]
+	quotepath = false
+	excludesfile = C:/Users/eric/java.gitignore
+	excludesfile = C:/Users/eric/aurora.gitignore
+[gui]
+	encoding = utf-8
+[i18n "commit"]
+	encoding = utf-8
+[i18n]
+	logoutputencoding = utf-8

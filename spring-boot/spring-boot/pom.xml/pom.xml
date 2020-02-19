@@ -1,0 +1,21 @@
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-devtools</artifactId>
+		<!--为了在实际生产环境中不传递到其它项目中-->
+        <optional>true</optional>
+    </dependency>
+</dependencies>
+
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+				<!--热启动支持-->
+                <fork>true</fork>
+            </configuration>
+        </plugin>
+	</plugins>
+</build>

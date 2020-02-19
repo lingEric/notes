@@ -1,0 +1,46 @@
+string
+存
+set name eric
+取
+get name
+删
+del name
+
+hash
+存
+hmset myhash index1 "object1" index2 "object2"
+取
+hget myhash index1
+hget myhash index2
+删
+del key
+hdel key field1 [field2] 
+
+list
+存
+lpush mylist "object1"
+lpush mylist "object2"
+取
+lrange mylist 0 10
+删
+del key
+
+
+set
+存
+sadd myset "object1"
+sadd myset "object2"
+取
+smembers myset
+删
+del key
+
+
+zset
+存
+zadd myzset 0 object1
+zadd myzset 1 object2
+zadd myzset 2 object3
+取
+zrangebyscore myzset 0 1000
+

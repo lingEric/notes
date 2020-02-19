@@ -1,0 +1,130 @@
+/*
+<div class='input-image-uploader'>
+	<ul class='input-image-files'>
+		<li class='input-image-file'></li>
+	</ul>
+	<div class='input-image-box'>
+		<input class='input-image'>
+	</div>
+</div>
+*/
+
+.input-image-uploader{
+    margin-bottom: -4px;
+    margin-right: -9px;
+    overflow: hidden;
+}
+
+.input-image-uploader ul{
+	display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+
+.input-image-files{
+	list-style: none;
+}
+
+.input-image-files li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+
+.input-image-file{
+    float: left;
+    margin-right: 9px;
+    margin-bottom: 9px;
+    width: 79px;
+    height: 79px;
+    background: no-repeat 50%;
+    background-size: cover;
+}
+
+.input-image-box {
+    float: left;
+    position: relative;
+    margin-right: 9px;
+    margin-bottom: 9px;
+    width: 77px;
+    height: 77px;
+    border: 1px solid #d9d9d9;
+}
+
+
+.input-image-box:before {
+    width: 2px;
+    height: 39.5px;
+}
+
+
+.input-image-box:after {
+    width: 39.5px;
+    height: 2px;
+}
+
+.input-image-box:before,.input-image-box:after{
+	content: " ";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%,-50%);
+	transform: translate(-50%,-50%);
+	background-color: #d9d9d9;
+}
+
+
+.input-image {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+/*	画廊使用
+ *	参考readme文件
+*/
+
+.my-gallery{
+	display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #000;
+    z-index: 180000;
+}
+
+.my-gallery-img{
+	position: absolute;
+    top: 10px;
+    right: 0;
+    bottom: 60px;
+    left: 0;
+    background: 50% no-repeat;
+    background-size: contain;
+}
+
+.my-gallery-option{
+	position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #0d0d0d;
+    color: #fff;
+    line-height: 60px;
+    text-align: center;
+}
+
+.my-gallery-option-icon{
+	display: block;
+}
+

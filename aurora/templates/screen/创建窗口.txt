@@ -1,0 +1,24 @@
+Aurora.Masker.mask(Ext.getBody());
+Aurora.request({
+    url: $('sacpur5210_rfx_vendor_read_flag_update_link').getUrl(),
+    para: {
+	'rfx_line_vendor_id': rfx_line_vendor_id
+    },
+    success: function(rec) {
+		Aurora.Masker.unmask(Ext.getBody());
+		new Aurora.Window({
+			url: $('sacpur5210_rfx_detail_link').getUrl() + '?rfx_header_id=' + id + '&rfx_method=' + rfx_method + '&atm_counts=' + atm_counts + '&bg=' + bg,
+			title: '${l:PUR_RFX_HEADERS.VENDOR_QUOTATION}',
+			id: 'sacpur52102_rfx_detail_window',
+			fullScreen: true
+		}).on('beforeclose', sacpur5210RfxFeedbackQuery);
+    },
+    failure: function() {
+		Aurora.Masker.unmask(Ext.getBody());
+		return;
+    },
+    error: function() {
+		Aurora.Masker.unmask(Ext.getBody());
+		return;
+    }
+});

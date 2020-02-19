@@ -1,0 +1,2 @@
+String content=rs.getString("content");//content为从数据库获取的包含标签的博文内容
+content=content.replaceAll("<[.[^<]]*>", "");//使用String的replaceAll方法将标签去掉，注意里面的参数

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    $Author: lingdonglin22304
+	$Date: 
+	$Revision: 1.0  
+	$Purpose:
+-->
+<bm:model xmlns:bm="http://www.aurora-framework.org/schema/bm">
+    <bm:query-fields>
+        <bm:query-field name="invoice_id" queryExpression="invoice_id = ${@invoice_id}"/>
+        <bm:query-field name="invoice_number" queryExpression="invoice_number like &apos;%&apos; || ${@invoice_number} || &apos;%&apos; "/>
+    </bm:query-fields>
+    <bm:operations>
+        <bm:operation name="query">
+            <bm:query-sql><![CDATA[
+            
+				#WHERE_CLAUSE#             
+			]]></bm:query-sql>
+        </bm:operation>
+        <bm:operation name="insert">
+            <bm:parameters>
+                <bm:parameter name="" input="false" output="true" outputPath="/parameter/@xxx"/>
+            </bm:parameters>
+            <bm:query-sql><![CDATA[
+            begin 
+            	
+            end;
+			]]></bm:query-sql>
+        </bm:operation>
+        <bm:operation name="update">
+            <bm:query-sql><![CDATA[
+            begin 
+            	
+            end;
+			]]></bm:query-sql>
+        </bm:operation>
+        <bm:operation name="delete">
+            <bm:query-sql><![CDATA[
+            begin
+				
+            end;
+			]]></bm:query-sql>
+        </bm:operation>
+    </bm:operations>
+</bm:model>

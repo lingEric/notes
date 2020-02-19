@@ -1,0 +1,5 @@
+修改控制台输出编码问题【7.0版本】
+
+到tomcat/conf/目录下 
+
+修改logging.properties 找到 java.util.logging.ConsoleHandler.encoding = utf-8这行 更改为 java.util.logging.ConsoleHandler.encoding = GBK

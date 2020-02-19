@@ -1,0 +1,82 @@
+参考：http://www.mybatis.org/redis-cache/
+mybatis-redis是mybatis集成redis实现二级缓存的一个实现，和mybatis-memcached类似,这种方式是mybatis集成redis最快的方式，无需自己编写代码实现cache接口
+
+mybatis-redis的官方git地址https://github.com/mybatis/redis-cache
+
+1.项目集成mybatis-redis
+<dependency>
+	<groupId>org.mybatis.caches</groupId>
+	<artifactId>mybatis-redis</artifactId>
+	<version>1.0.0-beta1</version>
+</dependency>
+<dependency>
+	<groupId>redis.clients</groupId>
+	<artifactId>jedis</artifactId>
+	<version>2.8.0</version>
+</dependency>
+
+2.在mybatis配置中开启缓存
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+		PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="cacheEnabled" value="true"/>
+	</settings>
+	
+	<plugins>
+		<!--mybatis 分页插件-->
+		<plugin interceptor="com.github.pagehelper.PageHelper">
+			<!--分页参数合理化  -->
+			<property name="reasonable" value="true"/>
+			<property name="dialect" value="mysql" />
+		</plugin>
+	</plugins>
+</configuration>
+
+3.在项目的资源（maven resource）目录中加入redis.propertis文件
+redis.host=120.79.71.44
+redis.port=6379
+redis.pass=zhiyuntech
+redis.timeout=5000
+
+4.最后在mapper映射文件中开启cache即可
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lisi.test.dao.UserDao">
+    <!--启用mybatis-redis-->
+    <cache type="org.mybatis.caches.redis.RedisCache"/>
+    <resultMap type="User" id="UserResult">
+        <result property="id" column="id"/>
+        <result property="uuid" column="uuid"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+    <insert id="save" parameterType="User">
+        <selectKey resultType="int" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into
+        t_user(uuid,username,password,create_time)
+        values(#{uuid},#{username},#{password},#{createTime})
+    </insert>
+  
+    <delete id="delete" parameterType="long">
+		delete from t_user where id =
+		#{id}
+	</delete>
+   
+    <select id="getById" parameterType="long" resultType="User">
+		select
+		id,uuid,username,password,create_time as createTime from t_user
+		where id=#{id}
+	</select>
+  
+    <update id="update" parameterType="User">
+		update t_user set
+		username=#{username}
+		where id = #{id}
+	</update>
+</mapper>

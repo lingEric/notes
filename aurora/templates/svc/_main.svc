@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    $Author: lingdonglin22304
+	$Date:   
+	$Revision: 1.0  
+	$Purpose: 
+-->
+<a:service xmlns:c="aurora.plugin.lcache.update" xmlns:p="uncertain.proc" xmlns:a="http://www.aurora-framework.org/application" trace="true">
+    <a:init-procedure>
+        <p:echo/>
+        <a:batch-apply sourcepath="/parameter">
+            <p:switch test="@current_parameter/@_status">
+                <p:case value="insert">
+                    <a:model-insert model="acp.ACP8872.acp_invoice"/>
+                </p:case>
+                <p:case value="update">
+                    <a:model-update model="acp.ACP8872.acp_invoice"/>
+                </p:case>
+                <p:case value="delete">
+                    <a:model-delete model="acp.ACP8872.acp_invoice"/>
+                </p:case>
+            </p:switch>
+        </a:batch-apply>
+    </a:init-procedure>
+</a:service>

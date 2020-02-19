@@ -1,0 +1,19 @@
+function blt1010_date_Validator(record, name, value) {
+	if (name == 'date_from_desc' || name == 'date_to_desc') {
+	    var date_from_desc = record.get('date_from_desc');
+	    var date_to_desc = record.get('date_to_desc');
+	    if (typeof(date_to_desc) != 'undefined' && !Ext.isEmpty(date_to_desc)) {
+		if (!blt1010_compareDate(date_from_desc, date_to_desc)) {
+		    return '${l:BLT.START_END_DATE_VALI_ERROR}';
+		}
+	    }
+	    return true;
+	}
+    }
+    
+function blt1010_compareDate(start, end) {
+	if (start > end) {
+	    return false;
+	}
+	return true;
+}

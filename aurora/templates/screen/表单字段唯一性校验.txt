@@ -1,0 +1,23 @@
+//1.编辑器注册change事件
+<a:textField id="bid1030_opening_places_tf1" maxLength="30">
+	<a:events >
+		<a:event name="change" handler="place_code_valid_fun" />
+	</a:events>
+</a:textField>
+//2.发送请求，判断数据库中是否存在记录
+function place_code_valid_fun(component,value,oldValue){
+	Aurora.request({
+		url:$('bid_opening_places_query_link').getUrl(),
+		para:{
+		    'place_code':value
+		},
+		success:function(result){
+		    debugger;
+		    var count = result.result.record.count;
+		    if(count>0){
+			Aurora.showMessage('${l:PROMPT}','开标地点代码重复，请重新输入！'); 
+			component.setValue('');
+		    }
+		 }
+	});
+}

@@ -1,0 +1,18 @@
+23853:M 26 Nov 2018 19:00:47.732 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+解决：
+修改文件/etc/sysctl.conf，加入
+net.core.somaxconn= 1024
+
+23853:M 26 Nov 2018 19:00:47.732 # Server initialized
+23853:M 26 Nov 2018 19:00:47.732 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+解决：
+修改文件/etc/sysctl.conf，加入
+vm.overcommit_memory = 1
+
+23853:M 26 Nov 2018 19:00:47.732 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
+解决：
+修改文件/etc/rc.local，加入
+/sys/kernel/mm/transparent_hugepage/enabled
+
+
+

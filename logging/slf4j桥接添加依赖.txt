@@ -1,0 +1,20 @@
+LOGBACK-CLASSIC 
+<dependency> 
+  <groupId>ch.qos.logback</groupId>
+  <artifactId>logback-classic</artifactId>
+  <version>1.2.3</version>
+</dependency>
+
+LOG4J 
+<dependency> 
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-log4j12</artifactId>
+  <version>1.7.27</version>
+</dependency>
+
+JAVA.UTIL.LOGGING 
+<dependency> 
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-jdk14</artifactId>
+  <version>1.7.27</version>
+</dependency>

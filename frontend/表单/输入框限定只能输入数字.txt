@@ -1,0 +1,6 @@
+只允许输入数字,不带小数点
+<input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" name="numSort">  
+
+
+只允许输入数字，带小数点
+<input type="text" onkeyup="value=value.replace(/[^\d\.]/g,'')" name="numSort">  

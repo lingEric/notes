@@ -1,0 +1,247 @@
+//1.导入以下文件
+//input-image-upload.css
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>知云——针对编程的个性化学习推荐系统</title>
+    <%
+        pageContext.setAttribute("APP_PATH", request.getContextPath());
+    %>
+    <c:if test="${empty admin}">
+        <%--非法访问--%>
+        <c:redirect url="${APP_PATH}/adminLogin"/>
+    </c:if>
+    <link rel="shortcut icon" type="image/x-icon" href="${APP_PATH}/static/favicon.ico"/>
+    <link rel="stylesheet" href="${APP_PATH}/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${APP_PATH}/static/css/toastr.min.css">
+    <link rel="stylesheet" href="${APP_PATH}/static/css/offcanvas.css">
+    <link rel="stylesheet" href="${APP_PATH}/static/css/fontawesome.min.css">
+
+
+    <link rel="stylesheet" href="${APP_PATH}/static/css/input-image-upload.css">
+</head>
+<body>
+
+<jsp:include page="${APP_PATH}/common/admin/head-area.jsp"/>
+<%--提交表单--%>
+<div class="m-2 p-2 bg-white rounded shadow-lg border border-light" style="overflow: auto;">
+    <form enctype="multipart/form-data">
+        <div class="form-group input-group-sm">
+            <label for="areaname">编程语言</label>
+            <input type="text" class="form-control col-lg-3 col-md-12" maxlength="20" id="areaname" name="areaname">
+        </div>
+
+        <div class="form-group">
+            <label for="description">描述</label>
+            <textarea class="form-control" maxlength="1024" rows="4" id="description" name="description"></textarea>
+        </div>
+
+        <input type="hidden" id="imgurl" name="imgurl">
+    </form>
+    <div class="form-group">
+        <label for="uploaderInput">图标选择</label>
+        <div style="clear: both"></div>
+        <div class="input-image-uploader">
+            <ul class="input-image-files pl-0" id="uploaderFiles">
+
+            </ul>
+            <div class="input-image-box">
+                <input id="uploaderInput" class="input-image" type="file" name="files" accept="image/*" multiple="multiple">
+            </div>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+    <a id="btn-save" class="btn btn-sm btn-outline-info disabled" data-flag="false">保存图片</a>
+    <a id="btn-submit" class="btn btn-sm btn-success" data-flag="false">提交</a>
+
+</div>
+
+<!--图片预览-->
+<div class="my-gallery" id="gallery">
+    <span class="my-gallery-img" id="galleryImg"></span>
+    <div class="my-gallery-option">
+        <a href="javascript:void(0);" class="my-gallery-option-icon pt-2 pb-1">
+            <i id="icon-delete" class="fa fa-trash-alt fa-2x" style="color: white"></i>
+        </a>
+    </div>
+</div>
+
+
+<script src="${APP_PATH}/static/js/jquery-3.3.1.min.js"></script>
+<script src="${APP_PATH}/static/js/bootstrap.min.js"></script>
+
+
+<script src="${APP_PATH}/static/js/toastr.min.js"></script>
+<script src="${APP_PATH}/static/js/offcanvas.js"></script>
+<script src="${APP_PATH}/static/js/admin/adminAddArea.js"></script>
+
+</body>
+
+</html>
+
+
+//JavaScript
+$(function () {
+    var $gallery = $("#gallery"),
+        $galleryImg = $("#galleryImg"),
+        $uploaderInput = $("#uploaderInput"),
+        $uploaderFiles = $("#uploaderFiles");
+    var lil = "";
+    var ele = [];   // 用于存储上传的图片文件数组
+
+    //添加图片
+    $uploaderInput.on("change", function (e) {
+        var src;  //用于图片显示的地址
+        var url = window.URL || window.webkitURL || window.mozURL;  //本地地址，用于图片显示的绝对地址
+        var files = e.target.files;  //选取的图片文件
+        //遍历上传的图片文件
+        var size = files.length;
+
+        //限定选择的图片张树为9张
+        if (size > 9) {
+            size = 9;
+        }
+        for (var i = 0; i < size; i++) {
+            var file = files[i];
+            // 过滤掉非图片类型文件i
+            if (!file.type.match('image.*')) {
+                //不是图片文件，跳出循环
+                continue;
+            }
+            // 过滤掉重复上传的图片
+            var tip = false;
+            for (var j = 0; j < ele.length; j++) {
+                if (ele[j].name === file.name) {
+                    tip = true;
+                    break;
+                }
+            }
+            if (!tip) {
+                //去重的图片
+                if (url) {
+                    src = url.createObjectURL(file);
+                } else {
+                    src = e.target.result;
+                }
+                var tmpl = '';
+                //动态创建li标签，用于显示符合的图片
+                tmpl += '<li class="input-image-file"' + 'id="' + file.name + '" style="background-image:url(' + src + ')"></li>';
+                $uploaderFiles.append(tmpl);
+                ele.push(file);   //把符合条件的图片文件存储于ele数组
+                ++lil;  //把创建的li标签加1，用于判断图片是否到达规定数目
+            }
+
+            //可点击
+            $("#btn-save").attr("data-flag", "true");
+            $("#btn-save").removeClass("disabled");
+            //做判断，如果图片达到9张
+            if (lil >= 9) {
+                $('.input-image-box').css('display', 'none');
+            }
+        }
+    });
+
+
+    var index;
+    var tid;
+
+    //预览图片
+    $uploaderFiles.on("click", "li", function () {
+        index = $(this).index();
+        tid = $(this).attr("id");
+        $galleryImg.attr("style", this.getAttribute("style"));
+        $gallery.fadeIn(100);
+    });
+
+    $gallery.on("click", function () {
+        $gallery.fadeOut(100);
+    });
+
+    //删除图片
+    $("#icon-delete").click(function () {
+        $("#uploaderInput").val('');
+        //删除该图片的节点
+        $uploaderFiles.find("li").eq(index).remove();
+        --lil;   //存储li标签的个数减1
+        $('.input-image-box').css('display', 'block');
+        if (lil < 1) {
+            //修改保存按钮属性
+            $("#btn-save").attr("data-flag", "false");
+            $("#btn-save").addClass("disabled");
+        }
+
+
+    });
+
+    //上传图片
+    $("#btn-save").click(function () {
+        //上传图片
+        if ($("#btn-save").attr('data-flag') === 'true') {
+            //js获取图片对象
+            toastr.info("正在上传图片，请稍等！");
+            //开始封装待上传的图片数据
+            var formFile = new FormData();
+            for (var i = 0; i < ele.length; i++) {
+                formFile.append("files", ele[i]);
+            }
+            $.ajax({
+                url: "/filesUpload",
+                data: formFile,
+                type: "POST",
+                dataType: "json",
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (result) {
+                    //接收返回的图片路径
+                    if (result.code === 100) {
+                        var images="";
+                        $.each(result.extend.fileList,function (name,value) {
+                            images += value + ',';
+                        });
+                        $("#imgurl").val(images);
+                        $("#btn-submit").attr('data-flag', 'true');
+                        toastr.success("图片上传成功！");
+                    } else {
+                        toastr.success("图片上传失败，请重试！！！");
+                    }
+                }
+            })
+        } else {
+            toastr.error("请先选择图片");
+        }
+    })
+
+    //提交
+    $("#btn-submit").click(function () {
+        if ($("#title").val().length < 1) {
+            toastr.error("请填写公告标题");
+            return false;
+        }
+        if ($("#content").val().length < 10) {
+            toastr.error("请填写较详细的公告内容");
+            return false;
+        }
+        if (($("#btn-submit").attr("data-flag") === 'true')) {
+            $.ajax({
+                url: '/adminAddNotification',
+                method: "POST",
+                data: $("form").serialize(),
+                success: function (result) {
+                    if (result.code === 100) {
+                        toastr.success("添加成功");
+                        window.location.href = '/adminNotification';
+                    } else {
+                        toastr.error(result.extend.error);
+                    }
+                }
+            });
+        } else {
+            toastr.error("请先上传图片，谢谢！！");
+        }
+    })
+});

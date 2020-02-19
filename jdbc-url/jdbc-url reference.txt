@@ -1,0 +1,14 @@
+mysql 
+Driver类：
+com.mysql.jdbc.Driver
+
+URL：
+jdbc:mysql://localhost:3306/test
+
+
+Oracle 
+Driver类：
+oracle.jdbc.driver.OracleDriver
+
+URL：
+jdbc:oracle:thin:@localhost:1521:[sid]

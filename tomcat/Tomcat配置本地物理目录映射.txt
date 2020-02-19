@@ -1,0 +1,19 @@
+## 配置tomcat路径映射
+
+修改文件conf/server.xml，添加节点标签`<Context>`，每次添加新标签时，把原有标签注释掉，不删除
+
+```xml
+<!--注意位置-->
+<Host name="localhost" appBase="webapps" unpackWARs="true" autoDeploy="true">
+	<Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+	   prefix="localhost_access_log" suffix=".txt"
+	   pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+
+	<Context path="/" reloadable="false" docBase="D:\eclipseworkspacea\SRM-Starter\webRoot" /> 
+
+</Host>
+```
+
+上述配置是为了物理映射网站的本地路径。
+
+注意：如果出现端口冲突，可以自定义端口号

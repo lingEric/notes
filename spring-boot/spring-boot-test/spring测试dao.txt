@@ -1,0 +1,17 @@
+1.引入springmvc
+<!--Spring-test -->
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-test</artifactId>
+	<version>4.3.7.RELEASE</version>
+</dependency>
+
+2.@ContextConfiguration指定Spring配置文件的位置
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"classpath:applicationContext.xml"})
+public class MapperTest {
+
+
+3.直接autowired要使用的组件即可

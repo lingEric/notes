@@ -1,0 +1,20 @@
+C:\Users\23570>keytool -genkey -alias tomcat -keyalg RSA -keystore D:\keystore\keystore.jks
+输入密钥库口令:wodeshijie
+再次输入新口令:wodeshijie
+您的名字与姓氏是什么?
+  [Unknown]:  127.0.0.1
+您的组织单位名称是什么?
+  [Unknown]:
+您的组织名称是什么?
+  [Unknown]:
+您所在的城市或区域名称是什么?
+  [Unknown]:
+您所在的省/市/自治区名称是什么?
+  [Unknown]:
+该单位的双字母国家/地区代码是什么?
+  [Unknown]:
+CN=127.0.0.1, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown是否正确?
+  [否]:  y
+
+输入 <tomcat> 的密钥口令
+        (如果和密钥库口令相同, 按回车):直接回车

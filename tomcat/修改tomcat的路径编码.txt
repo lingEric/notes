@@ -1,0 +1,3 @@
+修改tomcat的路径编码
+文件：conf/server.xml
+<Connector port="8080"  protocol="HTTP/1.1" connectionTimeout="20000" redirectPort="8443" URIEncoding="UTF-8" />

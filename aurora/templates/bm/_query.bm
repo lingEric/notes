@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    $Author: lingdonglin22304
+	$Date: 
+	$Revision: 1.0  
+	$Purpose:
+-->
+<bm:model xmlns:bm="http://www.aurora-framework.org/schema/bm">
+    <bm:operations>
+        <bm:operation name="query">
+            <bm:query-sql><![CDATA[
+
+				#WHERE_CLAUSE#
+            ]]></bm:query-sql>
+        </bm:operation>
+    </bm:operations>
+    <bm:query-fields>
+        <bm:query-field name="bank_code" queryExpression="ccb.bank_code like ${@bank_code} || &apos;%&apos;"/>
+        <bm:query-field name="bank_name" queryExpression="ccbv.bank_name like ${@bank_name} || &apos;%&apos;"/>
+    </bm:query-fields>
+</bm:model>

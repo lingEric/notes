@@ -1,0 +1,58 @@
+1.页面加载div
+
+<div class="weui-loadmore" id="weui-loadmore">
+	<i class="weui-loading"></i>
+	<span class="weui-loadmore__tips">正在加载</span>
+</div>
+
+
+
+2.默认加载第1页
+
+var currentPage = 1;
+var hasNextPage = true;
+$(function () {
+	//访问此页面之后直接显示第一页数据
+	to_page(1);
+	$(document.body).infinite();
+	var loading = false;  //状态标记
+	$(document.body).infinite().on("infinite", function () {
+		if (loading) return;
+		loading = true;
+		setTimeout(function () {
+			//获取评论信息，并判断返回的数据是否为最后一页，如果为最后一页，则销毁滚动加载
+			currentPage += 1;
+			if (hasNextPage) {
+				to_page(currentPage);
+				loading = false;
+			} else {
+				//销毁滚动加载
+				$(document.body).destroyInfinite();
+
+				//隐藏正在加载
+				$("#weui-loadmore").hide();
+			}
+		}, 1500);   //模拟延迟
+	});
+})
+
+function to_page(pn) {
+	$.ajax({
+		url: "${APP_PATH}//" + pn,
+		type: "GET",
+		success: function (result) {
+			hasNextPage = result.extend.pageInfo.hasNextPage;
+			build(result);
+		}
+	});
+}
+
+//构建分页数据
+function build(result) {
+	
+	var list = result.extend.pageInfo.list;
+	
+	$.each(list, function (index, item) {
+		
+	});
+}

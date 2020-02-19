@@ -1,0 +1,45 @@
+0.引入jar包
+<dependency>
+	<groupId>org.hibernate</groupId>
+	<artifactId>hibernate-validator</artifactId>
+	<version>5.4.1.Final</version>
+</dependency>
+
+1.前台验证字段合法性
+//正则验证字段
+function validate() {
+	var regex_tel = /^1[0-9]{10}$/;
+	var regex_password = /^[a-zA-Z0-9]{8,16}$/;
+	if (!regex_tel.test($("input[name='tel']").val())) {
+		$("#error").empty();
+		$("#error").append("你的手机号填写格式不正确，请重试！");
+		return false;
+	}
+
+	if (!regex_password.test($("input[name='password']").val())) {
+		$("#error").empty();
+		$("#error").append("密码格式不正确，由8-16位字母或数字组成！");
+		return false;
+	}
+	return true;
+}
+
+
+2.JavaBean的相应属性添加注解
+@Pattern(regexp="^[a-zA-Z0-9]{6,16}$",message="密码至少由6位字母或数字组成，请重试！")
+private String password;
+
+3.controller的处理方法中添加@Valid
+public Msg register(@RequestParam String code, @Valid User user, BindingResult result) {
+	if (result.hasErrors()) {
+		//校验失败，返回失败
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		List<FieldError> fieldErrors = result.getFieldErrors();
+		for (FieldError fieldError : fieldErrors) {
+			map.put(fieldError.getField(), fieldError.getDefaultMessage());
+		}
+		return Msg.fail().add("errorFields", map);
+	} else {
+		//校验成功
+	}
+}

@@ -1,0 +1,156 @@
+MySQL常用命令
+1.开启或关闭MySQL服务
+service mysql start/stop
+2.进入mysql命令行界面
+mysql -u root(${username}) -p
+3.查看当前mysql账户及权限
+--》进入命令行界面
+--》选择数据库
+mysql> use mysql;
+Database changed
+--》查询
+mysql> select host,user,password from user;
++--------------+------+-------------------------------------------+
+| host         | user | password                                  |
++--------------+------+-------------------------------------------+
+| localhost    | root | *A731AEBFB621E354CD41BAF207D884A609E81F5E |
+| 192.168.1.1 | root | *A731AEBFB621E354CD41BAF207D884A609E81F5E |
++--------------+------+-------------------------------------------+
+--》将host字段的值改为%(表示可以在远程访问到mysql服务器)
+update user set host = ’%’ where user = ’root’;
+将权限改为ALL PRIVILEGES
+
+mysql> use mysql;
+Database changed
+mysql> grant all privileges  on *.* to root@'%' identified by "password";
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> flush privileges;
+Query OK, 0 rows affected (0.00 sec)
+--》此处*.*表示任何数据库的任何表，root@'%' 表示root账号，任意ip地址，password为root账号密码
+mysql> select host,user,password from user;
++--------------+------+-------------------------------------------+
+| host         | user | password                                  |
++--------------+------+-------------------------------------------+
+| localhost    | root | *A731AEBFB621E354CD41BAF207D884A609E81F5E |
+| 192.168.1.1 | root | *A731AEBFB621E354CD41BAF207D884A609E81F5E |
+| %            | root | *A731AEBFB621E354CD41BAF207D884A609E81F5E |
++--------------+------+-------------------------------------------+
+4.进入远程mysql命令行界面(前提：该ip开放了相应端口，并且有远程账号)
+mysql -u root -p -h 192.168.5.116(${ip}) 
+
+5.增加新用户
+格式：grant 权限 on 数据库.* to 用户名@登录主机 identified by "密码"
+如：grant select,insert,update,delete on *.* to user1@localhost Identified by "password1";
+
+如果希望用户能够在任何机器上登陆mysql，则将localhost改为'%'
+
+6.显示所有数据库
+show databases;
+
+缺省有两个数据库：mysql和test。 mysql库存放着mysql的系统和用户权限信息，我们改密码和新增用户，实际上就是对这个库进行操作。
+
+7.显示库中的数据表：
+--》选中数据库
+use mysql;
+--》查询所有数据表
+show tables;
+
+8.显示数据表的结构：
+describe 表名;
+
+9.建库与删库：
+create database 库名;
+drop database 库名;
+
+10.建表：
+
+use 库名;
+
+create table 表名(字段列表);
+
+drop table 表名;
+
+11.清空表中记录：
+
+delete from 表名;
+
+12.导出数据
+
+mysqldump --opt test > mysql.test
+
+即将数据库test数据库导出到mysql.test文件，后者是一个文本文件
+
+如：mysqldump -u root -p 123456 --databases dbname > mysql.dbname
+
+就是把数据库dbname导出到文件mysql.dbname中。
+
+13.导入数据
+mysqlimport -u root -p123456 < mysql.dbname。
+
+
+14.将文本数据导入数据库:
+
+文本数据的字段数据之间用tab键隔开。
+
+use test;
+
+load data local infile "文件名" into table 表名;
+
+
+15.导入.sql文件命令(例如D:/mysql.sql)
+
+mysql>use database;
+
+mysql>source d:/mysql.sql;
+
+其它参考如下
+1.在windows中MySql以服务形式存在，在使用前应确保此服务已经启动，未启动可用net start mysql命令启动。
+而Linux中启动时可用“/etc/rc.d/init.d/mysqld start"命令，注意启动者应具有管理员权限。
+2.刚安装好的MySql包含一个含空密码的root帐户和一个匿名帐户，这是很大的安全隐患，对于一些重要的应用我们应将安全性尽可能提高，在这里应把匿名帐户删除、 root帐户设置密码，可用如下命令进行：
+use mysql;
+delete from User where User="";
+update User set Password=PASSWORD(${password}) where User=root;
+3.GRANT的常用用法如下：
+grant all on mydb.* to NewUserName@HostName identified by "password" ;
+grant usage on *.* to NewUserName@HostName identified by "password";
+grant select,insert,update on mydb.* to NewUserName@HostName identified by "password";
+grant update,delete on mydb.TestTable to NewUserName@HostName identified by "password";
+
+常用权限
+FILE: 在MySQL服务器上读写文件。
+PROCESS: 显示或杀死属于其它用户的服务线程。
+RELOAD: 重载访问控制表，刷新日志等。
+SHUTDOWN: 关闭MySQL服务。
+数据库/数据表/数据列权限：
+ALTER: 修改已存在的数据表(例如增加/删除列)和索引。
+CREATE: 建立新的数据库或数据表。
+DELETE: 删除表的记录。
+DROP: 删除数据表或数据库。
+INDEX: 建立或删除索引。
+INSERT: 增加表的记录。
+SELECT: 显示/搜索表的记录。
+UPDATE: 修改表中已存在的记录。
+特别的权限：
+ALL: 允许做任何事(和root一样)。
+USAGE: 只允许登录--其它什么也不允许做。
+
+ 
+
+4.创建数据表
+> CREATE TABLE mytable (name VARCHAR(20), sex CHAR(1), 
+> birth DATE, birthaddr VARCHAR(20)); 
+5.显示表格列的属性：show columns from tableName(类似于describe命令)
+6.匹配字符：可以用通配符_代表任何一个字符，％代表任何字符串; 
+7.增加一个字段：alter table tabelName add column fieldName dateType; 
+8.增加多个字段：alter table tabelName add column fieldName1 dateType,add columns fieldName2 dateType; 
+9.查询时间：select now(); 
+10.查询当前用户：select user(); 
+11.查询数据库版本：select version(); 
+12.查询当前使用的数据库：select database(); 
+13.alter table table1 rename as table2; 
+14.修改列的类型 
+alter table table1 modify id int unsigned;
+//修改列id的类型为int unsigned 
+alter table table1 change id sid int unsigned;
+//修改列id的名字为sid，而且把属性修改为int unsigned

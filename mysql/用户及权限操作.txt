@@ -1,0 +1,8 @@
+use mysql;
+select host,user,authentication_string from user;
+show grants for root@'localhost';
+create user 'hzero'@'localhost' identified by 'hzero';
+flush privileges;
+grant SELECT,DELETE,UPDATE,INSERT on hzero_platform.* to 'hzero'@'localhost' IDENTIFIED by 'hzero';
+grant SELECT,DELETE,UPDATE,INSERT on hzero_governance.* to 'hzero'@'localhost' IDENTIFIED by 'hzero';
+flush privileges;

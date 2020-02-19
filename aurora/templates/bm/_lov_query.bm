@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    $Author: lingdonglin22304
+	$Date: 
+	$Revision: 1.0  
+	$Purpose:
+-->
+<bm:model xmlns:bm="http://www.aurora-framework.org/schema/bm">
+    <bm:operations>
+        <bm:operation name="query">
+            <bm:query-sql><![CDATA[
+                SELECT
+					ccb.bank_id,
+					ccb.bank_code,
+					ccbv.bank_name 
+				FROM
+					csh_cloud_banks ccb 
+				LEFT outer JOIN 
+					csh_cloud_banks_vl ccbv ON ccb.bank_code = ccbv.bank_code
+				#WHERE_CLAUSE#
+            ]]></bm:query-sql>
+        </bm:operation>
+    </bm:operations>
+    <bm:fields>
+        <bm:field name="bank_id" databaseType="VARCHAR2" datatype="java.lang.String" displayWidth="150" forDisplay="false" forQuery="false"/>
+        <bm:field name="bank_code" databaseType="VARCHAR2" datatype="java.lang.String" displayWidth="150" forDisplay="true" forQuery="true" prompt="ACP_INVOICE_MGMT_21742.BANK_NAME"/>
+        <bm:field name="bank_name" databaseType="VARCHAR2" datatype="java.lang.String" displayWidth="150" forDisplay="true" forQuery="true" prompt="ACP_INVOICE_MGMT_21742.BANK_NAME_CODE"/>
+    </bm:fields>
+    <bm:query-fields>
+        <bm:query-field name="bank_code" queryExpression="ccb.bank_code like ${@bank_code} || &apos;%&apos;"/>
+        <bm:query-field name="bank_name" queryExpression="ccbv.bank_name like ${@bank_name} || &apos;%&apos;"/>
+    </bm:query-fields>
+</bm:model>
