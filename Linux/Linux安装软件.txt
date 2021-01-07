@@ -5,8 +5,8 @@ apt remove			移除软件包
 apt purge			移除软件包及配置文件
 apt update			刷新存储库索引
 apt upgrade			升级所有可升级的软件包
-apt autoremove		自动删除不需要的包
-apt full-upgrade	在升级软件包时自动处理依赖关系
+apt autoremove		        自动删除不需要的包
+apt full-upgrade	        在升级软件包时自动处理依赖关系
 apt search			搜索应用程序
 apt show			显示装细节
 2.rpm
