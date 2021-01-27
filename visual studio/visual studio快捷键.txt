@@ -1,0 +1,15 @@
+ctrl+k+c				注释
+ctrl+k+u				取消注释
+ctrl+shift+enter			光标跳转到下一行			
+ctrl+enter				光标跳转到上一行
+alt+shift+ +				扩大选中文本区域
+alt+shift+ -				减小选中文本区域
+ctrl+l					删除当前行
+ctrl+d					复制当前行
+alt+ ->					代码补全
+ctrl+shift+backspace			跳转到之前编辑的地方
+ctrl+.					快速操作和重构
+ctrl+r ,ctrl+r				重命名
+alt+f12					速览定义
+f12					转到定义
+ctrl+alt+f12				转到声明
